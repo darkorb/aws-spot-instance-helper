@@ -5,8 +5,8 @@ import (
 	"os"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
 	"github.com/chrisurwin/aws-spot-instance-helper/agent"
+	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 )
 

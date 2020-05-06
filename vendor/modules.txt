@@ -1,0 +1,44 @@
+# github.com/ashwanthkumar/slack-go-webhook v0.0.0-20200209025033-430dd4e66960
+## explicit
+github.com/ashwanthkumar/slack-go-webhook
+# github.com/cpuguy83/go-md2man/v2 v2.0.0-20190314233015-f79a8a8ca69d
+github.com/cpuguy83/go-md2man/v2/md2man
+# github.com/gorilla/mux v1.7.4
+## explicit
+github.com/gorilla/mux
+# github.com/gorilla/websocket v1.4.2
+## explicit
+github.com/gorilla/websocket
+# github.com/konsorten/go-windows-terminal-sequences v1.0.3
+github.com/konsorten/go-windows-terminal-sequences
+# github.com/moul/http2curl v1.0.0
+## explicit
+github.com/moul/http2curl
+# github.com/parnurzeal/gorequest v0.2.15
+## explicit
+github.com/parnurzeal/gorequest
+# github.com/pkg/errors v0.9.1
+## explicit
+github.com/pkg/errors
+# github.com/rancher/go-rancher v0.1.1-0.20200505164325-7577995d47c0
+## explicit
+github.com/rancher/go-rancher/v2
+# github.com/russross/blackfriday/v2 v2.0.1
+github.com/russross/blackfriday/v2
+# github.com/shurcooL/sanitized_anchor_name v1.0.0
+github.com/shurcooL/sanitized_anchor_name
+# github.com/sirupsen/logrus v1.6.0
+## explicit
+github.com/sirupsen/logrus
+# github.com/urfave/cli v1.22.4
+## explicit
+github.com/urfave/cli
+# golang.org/x/crypto v0.0.0-20171019172325-541b9d50ad47
+## explicit
+# golang.org/x/net v0.0.0-20171019164906-aabf50738bcd
+## explicit
+golang.org/x/net/publicsuffix
+# golang.org/x/sys v0.0.0-20190422165155-953cdadca894
+golang.org/x/sys/unix
+# golang.org/x/text v0.1.1-0.20171013141220-c01e4764d870
+## explicit

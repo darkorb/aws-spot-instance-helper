@@ -9,8 +9,8 @@ import (
 	"github.com/chrisurwin/aws-spot-instance-helper/healthcheck"
 	"github.com/chrisurwin/aws-spot-instance-helper/rancherhelpers"
 
-	log "github.com/Sirupsen/logrus"
-	"github.com/rancher/go-rancher/v2"
+	client "github.com/rancher/go-rancher/v2"
+	log "github.com/sirupsen/logrus"
 
 	"github.com/ashwanthkumar/slack-go-webhook"
 )

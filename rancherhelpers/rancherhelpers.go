@@ -4,8 +4,8 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	log "github.com/Sirupsen/logrus"
-	"github.com/rancher/go-rancher/v2"
+	client "github.com/rancher/go-rancher/v2"
+	log "github.com/sirupsen/logrus"
 )
 
 const (
