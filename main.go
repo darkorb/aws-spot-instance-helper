@@ -6,12 +6,13 @@ import (
 	"time"
 
 	"github.com/chrisurwin/aws-spot-instance-helper/agent"
+	"github.com/chrisurwin/aws-spot-instance-helper/slackhelpers"
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 )
 
 //VERSION of the program
-var VERSION = "v0.1.0-dev"
+var VERSION = "v0.1.1-aznamier-dev"
 
 func beforeApp(c *cli.Context) error {
 	if c.GlobalBool("debug") {
@@ -59,6 +60,16 @@ func main() {
 			Usage:  "Slack Webhook URL",
 			EnvVar: "SLACK_WEBHOOK",
 		},
+		cli.StringFlag{
+			Name:   "slackMessageSuffix,ss",
+			Usage:  "Appears at the end of slack message - eg: @bob.jon or Tracking: 77283",
+			EnvVar: "SLACK_MESSAGE_SUFFIX",
+		},
+		cli.BoolFlag{
+			Name:   "slackInitAnnouncement,si",
+			Usage:  "Initial announcement will be send to slack on a startup",
+			EnvVar: "SLACK_INIT_ANNOUNCEMENT",
+		},
 	}
 	app.Run(os.Args)
 }
@@ -73,6 +84,13 @@ func start(c *cli.Context) error {
 	if c.String("cattleSecretKey") == "" {
 		return fmt.Errorf("Cattle Secret Key required")
 	}
-	a := agent.NewAgent(c.Duration("poll-interval"), c.String("cattleURL"), c.String("cattleAccessKey"), c.String("cattleSecretKey"), c.String("slackWebhookUrl"))
+	slc := &slackhelpers.SlackConfig{
+		AnnonunceOnInit: c.Bool("slackInitAnnouncement"),
+		WebhookURL:      c.String("slackWebhookUrl"),
+		MessageSuffix:   c.String("slackMessageSuffix"),
+	}
+
+	a := agent.NewAgent(c.Duration("poll-interval"), c.String("cattleURL"), c.String("cattleAccessKey"), c.String("cattleSecretKey"), slc)
+
 	return a.Start()
 }

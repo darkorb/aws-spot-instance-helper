@@ -8,23 +8,23 @@ import (
 	"github.com/chrisurwin/aws-spot-instance-helper/awshelpers"
 	"github.com/chrisurwin/aws-spot-instance-helper/healthcheck"
 	"github.com/chrisurwin/aws-spot-instance-helper/rancherhelpers"
+	"github.com/chrisurwin/aws-spot-instance-helper/slackhelpers"
 
 	client "github.com/rancher/go-rancher/v2"
 	log "github.com/sirupsen/logrus"
-
-	"github.com/ashwanthkumar/slack-go-webhook"
 )
 
 //Agent - Struct for Agent
 type Agent struct {
-	probePeriod     time.Duration
-	httpClient      http.Client
-	rancherClient   *client.RancherClient
-	slackWebhookURL string
+	probePeriod   time.Duration
+	httpClient    http.Client
+	rancherClient *client.RancherClient
+	selfMetadata  *rancherhelpers.SelfMetaData
+	slackConfig   *slackhelpers.SlackConfig
 }
 
 //NewAgent - Function to expose NewAgent
-func NewAgent(probePeriod time.Duration, cattleURL, cattleAccessKey, cattleSecretKey, slackWebhookURL string) *Agent {
+func NewAgent(probePeriod time.Duration, cattleURL, cattleAccessKey, cattleSecretKey string, slackConfig *slackhelpers.SlackConfig) *Agent {
 
 	var opts = &client.ClientOpts{
 		Url:       cattleURL,
@@ -34,18 +34,26 @@ func NewAgent(probePeriod time.Duration, cattleURL, cattleAccessKey, cattleSecre
 
 	var rc, _ = client.NewRancherClient(opts)
 
+	var sm = rancherhelpers.DetectSelfMetaData()
+
 	return &Agent{
 		probePeriod: probePeriod,
 		httpClient: http.Client{
 			Timeout: time.Duration(2 * time.Second),
 		},
-		rancherClient:   rc,
-		slackWebhookURL: slackWebhookURL,
+		rancherClient: rc,
+		selfMetadata:  sm,
+		slackConfig:   slackConfig,
 	}
 }
 
 //Start - Function to start agent
 func (a *Agent) Start() error {
+	log.Debug("Agent ", a.selfMetadata.HostName)
+
+	if a.slackConfig.AnnonunceOnInit {
+		slackhelpers.SendMessage("Monitoring", "good", a.slackConfig, a.selfMetadata)
+	}
 	go healthcheck.StartHealthcheck()
 	ticker := time.NewTicker(a.probePeriod)
 	for tk := range ticker.C {
@@ -65,15 +73,7 @@ func (a *Agent) Start() error {
 						log.Info("Instance is marked for termination")
 
 						// Notify slack channel if configured
-						if a.slackWebhookURL != "" {
-							payload := slack.Payload{
-								Text: fmt.Sprintf("Host %s is marked for termination and will be evacuated", hostname),
-							}
-							err := slack.Send(a.slackWebhookURL, "", payload)
-							if len(err) > 0 {
-								log.Error(fmt.Sprintf("There was a problem sending Slack notification: %s\n", err))
-							}
-						}
+						slackhelpers.SendMessage("EVACUATING", "danger", a.slackConfig, a.selfMetadata)
 
 						//Evacuate Host
 						_, err := rancherhelpers.EvacuateHost(hostname, a.rancherClient)
