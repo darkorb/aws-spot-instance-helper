@@ -31,7 +31,7 @@ github.com/shurcooL/sanitized_anchor_name
 # github.com/sirupsen/logrus v1.8.0
 ## explicit
 github.com/sirupsen/logrus
-# github.com/urfave/cli v1.22.4
+# github.com/urfave/cli v1.22.5
 ## explicit
 github.com/urfave/cli
 # golang.org/x/crypto v0.0.0-20171019172325-541b9d50ad47
