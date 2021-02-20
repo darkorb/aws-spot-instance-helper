@@ -39,6 +39,6 @@ stages:
     - task: Docker@2
       inputs:
         containerRegistry: 'darkorb-dockerhub'
-        repository: 'aws-spot-instance-helper'
+        repository: 'darkorb/aws-spot-instance-helper'
         command: 'buildAndPush'
         tags: 'latest'
